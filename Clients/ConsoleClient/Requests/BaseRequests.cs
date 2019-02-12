@@ -1,7 +1,9 @@
 ﻿using ConsoleClient.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ConsoleClient
 {
@@ -21,17 +23,26 @@ namespace ConsoleClient
             return client;
         }
 
-        protected static void ErrorCheck(HttpResponseMessage response)
+        protected static HttpResponseMessage TryGetResult(Task<HttpResponseMessage> responseTask)
         {
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                var errorMessage = response.Content.ReadAsStringAsync().Result;
+                var responseMessage = responseTask.Result;
 
-                // Deserialize received JSON-оbject
-                Dictionary<string, string> error =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(errorMessage);
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    // Deserialize received JSON-оbject
+                    Dictionary<string, string> error =
+                        JsonConvert.DeserializeObject<Dictionary<string, string>>(responseMessage.Content.ReadAsStringAsync().Result);
 
-                throw new AppException($"{response.StatusCode.ToString()} {error?["message"]}");
+                    throw new AppException($"{responseMessage.StatusCode.ToString()} {error?["message"]}");
+                }
+
+                return responseMessage;
+            }
+            catch (Exception e)
+            {
+                throw new AppException($"{e.Message}");
             }
         }
     }

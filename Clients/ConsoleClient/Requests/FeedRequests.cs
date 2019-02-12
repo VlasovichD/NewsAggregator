@@ -13,12 +13,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.PostAsJsonAsync(APP_PATH + "/api/collections/" + feed.CollectionId + "/feeds", feed).Result;
+                var responseTask =
+                    client.PostAsJsonAsync(APP_PATH + "/api/collections/" + feed.CollectionId + "/feeds", feed);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 FeedModel feedInfo = JsonConvert.DeserializeObject<FeedModel>(result);
@@ -32,12 +32,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 List<FeedModel> feeds = JsonConvert.DeserializeObject<List<FeedModel>>(result);
@@ -51,12 +51,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/" + feedId).Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/" + feedId);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 FeedModel feed = JsonConvert.DeserializeObject<FeedModel>(result);
@@ -70,12 +70,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.PutAsJsonAsync(APP_PATH + "/api/collections/" + feed.CollectionId + "/feeds/" + feed.Id, feed).Result;
+                var responseTask =
+                    client.PutAsJsonAsync(APP_PATH + "/api/collections/" + feed.CollectionId + "/feeds/" + feed.Id, feed);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.StatusCode.ToString();
+                return responseMessage.StatusCode.ToString();
             }
         }
 
@@ -84,12 +84,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.DeleteAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/" + feedId).Result;
+                var responseTask =
+                    client.DeleteAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/" + feedId);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.StatusCode.ToString();
+                return responseMessage.StatusCode.ToString();
             }
         }
 
@@ -98,12 +98,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/content").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/content");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 List<FeedContentModel> feeds = JsonConvert.DeserializeObject<List<FeedContentModel>>(result);
@@ -117,12 +117,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/" + feedId + "/content").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId + "/feeds/" + feedId + "/content");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 FeedContentModel feed = JsonConvert.DeserializeObject<FeedContentModel>(result);
@@ -136,12 +136,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections/0/feeds/url?=" + url).Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections/0/feeds/url?=" + url);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 FeedContentModel feed = JsonConvert.DeserializeObject<FeedContentModel>(result);

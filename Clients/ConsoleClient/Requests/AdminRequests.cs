@@ -13,12 +13,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.PostAsJsonAsync(APP_PATH + "/api/admin/users/regadmin", user).Result;
+                var responseTask =
+                    client.PostAsJsonAsync(APP_PATH + "/api/admin/users/regadmin", user);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 UserModel userInfo = JsonConvert.DeserializeObject<UserModel>(result);
@@ -32,12 +32,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/admin/users").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/admin/users");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 List<UserModel> users =
@@ -52,12 +52,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/admin/users/" + userId).Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/admin/users/" + userId);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 UserModel user = JsonConvert.DeserializeObject<UserModel>(result);
@@ -71,12 +71,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.DeleteAsync(APP_PATH + "/api/admin/users/" + userId).Result;
+                var responseTask =
+                    client.DeleteAsync(APP_PATH + "/api/admin/users/" + userId);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.StatusCode.ToString();
+                return responseMessage.StatusCode.ToString();
             }
         }
 
@@ -85,12 +85,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/values").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/values");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.Content.ReadAsStringAsync().Result;
+                return responseMessage.Content.ReadAsStringAsync().Result;
             }
         }
     }

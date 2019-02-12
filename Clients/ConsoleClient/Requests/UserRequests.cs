@@ -1,5 +1,6 @@
 ﻿using ConsoleClient.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -12,12 +13,12 @@ namespace ConsoleClient
         {
             using (var client = new HttpClient())
             {
-                var response =
-                    client.PostAsJsonAsync(APP_PATH + "/api/users/registration", user).Result;
+                var responseTask =
+                    client.PostAsJsonAsync(APP_PATH + "/api/users/registration", user);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 UserModel userInfo = JsonConvert.DeserializeObject<UserModel>(result);
@@ -34,12 +35,12 @@ namespace ConsoleClient
 
                 var authData = new { Username = userName, Password = password };
 
-                var response =
-                    client.PostAsJsonAsync(APP_PATH + "/api/users/authentication", authData).Result;
+                var responseTask =
+                    client.PostAsJsonAsync(APP_PATH + "/api/users/authentication", authData);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var responseMessage = TryGetResult(responseTask);
 
-                ErrorCheck(response);
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 Dictionary<string, string> userInfo =
@@ -49,17 +50,19 @@ namespace ConsoleClient
             }
         }
 
+
+
         // GET api/users/info
         public static UserModel GetUserInfo(string token)
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/users/info").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/users/info");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 UserModel userInfo = JsonConvert.DeserializeObject<UserModel>(result);
@@ -73,12 +76,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.PutAsJsonAsync(APP_PATH + "/api/users", user).Result;
+                var responseTask =
+                    client.PutAsJsonAsync(APP_PATH + "/api/users", user);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.StatusCode.ToString();
+                return responseMessage.StatusCode.ToString();
             }
         }
     }

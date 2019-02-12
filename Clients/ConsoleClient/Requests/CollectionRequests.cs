@@ -12,12 +12,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.PostAsJsonAsync(APP_PATH + "/api/collections", collection).Result;
+                var responseTask =
+                    client.PostAsJsonAsync(APP_PATH + "/api/collections", collection);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 CollectionModel collectionInfo = JsonConvert.DeserializeObject<CollectionModel>(result);
@@ -31,12 +31,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections").Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections");
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 List<CollectionModel> collections =
@@ -51,12 +51,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId).Result;
+                var responseTask =
+                    client.GetAsync(APP_PATH + "/api/collections/" + collectionId);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
 
                 // Deserialize received JSON-оbject
                 CollectionModel collection = JsonConvert.DeserializeObject<CollectionModel>(result);
@@ -70,12 +70,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.PutAsJsonAsync(APP_PATH + "/api/collections/" + collection.Id, collection).Result;
+                var responseTask =
+                    client.PutAsJsonAsync(APP_PATH + "/api/collections/" + collection.Id, collection);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.StatusCode.ToString();
+                return responseMessage.StatusCode.ToString();
             }
         }
 
@@ -84,12 +84,12 @@ namespace ConsoleClient
         {
             using (var client = CreateClient(token))
             {
-                var response =
-                    client.DeleteAsync(APP_PATH + "/api/collections/" + collectionId).Result;
+                var responseTask =
+                    client.DeleteAsync(APP_PATH + "/api/collections/" + collectionId);
 
-                ErrorCheck(response);
+                var responseMessage = TryGetResult(responseTask);
 
-                return response.StatusCode.ToString();
+                return responseMessage.StatusCode.ToString();
             }
         }
     }
