@@ -56,9 +56,13 @@ namespace FeedAggregator.BLL.Services
 
             var users = _database.Users.GetAll().ToList();
 
+            // first created user with Admin Role
+            if (users.Count == 0)
+                user.Role = RoleType.Admin.ToString();
+
             if (users.Any(x => x.Username == user.Username))
                 throw new ValidationException($"Username \"{user.Username}\" is already taken");
-
+ 
             CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.PasswordHash = passwordHash;
