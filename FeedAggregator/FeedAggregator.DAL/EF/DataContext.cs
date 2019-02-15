@@ -14,5 +14,26 @@ namespace FeedAggregator.DAL.EF
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                modelBuilder.Entity<User>().HasData(
+                    new User
+                    {
+                        Id = 1,
+                        FirstName = "Admin",
+                        LastName = "Admin",
+                        Username = "Admin",
+                        PasswordSalt = hmac.Key,
+                        PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes("Admin")),
+                        Role = "Admin" 
+                    });
+
+                base.OnModelCreating(modelBuilder);
+            }
+        }
+
     }
 }

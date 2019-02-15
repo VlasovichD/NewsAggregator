@@ -3,6 +3,7 @@ using FeedAggregator.BLL.Dtos;
 using FeedAggregator.BLL.Infrastructure;
 using FeedAggregator.BLL.Interfaces;
 using FeedAggregator.WebAPI.Helpers;
+using FeedAggregator.WebAPI.Infrastructure;
 using FeedAggregator.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
